@@ -44,10 +44,9 @@ func main() {
 		aa, err = anecdote.SCMB()
 		ce(err, "anecdote")
 	case "SI":
-		aa, err = anecdote.SI()
-		ce(err, "anecdote")
+		fallthrough
 	default:
-		aa, err = anecdote.SCMB()
+		aa, err = anecdote.SI()
 		ce(err, "anecdote")
 	}
 	fmt.Println(aa[0].String())
