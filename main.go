@@ -1,9 +1,11 @@
 package main
 
 import (
+	"crypto/tls"
 	"flag"
 	"fmt"
 	"log"
+	"net/http"
 	"os"
 	"os/signal"
 
@@ -16,7 +18,8 @@ var (
 
 func init() {
 	gracefulExit()
-	flag.StringVar(&source, "source", "SI", "source")
+	http.DefaultTransport.(*http.Transport).TLSClientConfig = &tls.Config{InsecureSkipVerify: true}
+	flag.StringVar(&source, "source", "SI", "source can be SI or SCMB")
 	flag.Parse()
 }
 
@@ -44,9 +47,10 @@ func main() {
 		aa, err = anecdote.SCMB()
 		ce(err, "anecdote")
 	case "SI":
-		fallthrough
-	default:
 		aa, err = anecdote.SI()
+		ce(err, "anecdote")
+	default:
+		aa, err = anecdote.SCMB()
 		ce(err, "anecdote")
 	}
 	fmt.Println(aa[0].String())
