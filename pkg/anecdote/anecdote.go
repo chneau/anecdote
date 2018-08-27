@@ -1,6 +1,7 @@
 package anecdote
 
 import (
+	"crypto/tls"
 	"net/http"
 	"strings"
 
@@ -25,8 +26,13 @@ func (a *Anecdote) String() string {
 
 // SCMB Se Coucher Moins Bete
 func SCMB() ([]Anecdote, error) {
+	client := &http.Client{
+		Transport: &http.Transport{
+			TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
+		},
+	}
 	found := []Anecdote{}
-	res, err := http.Get("https://secouchermoinsbete.fr/random")
+	res, err := client.Get("https://secouchermoinsbete.fr/random")
 	if err != nil {
 		return nil, err
 	}
