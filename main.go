@@ -1,11 +1,9 @@
 package main
 
 import (
-	"crypto/tls"
 	"flag"
 	"fmt"
 	"log"
-	"net/http"
 	"os"
 	"os/signal"
 
@@ -18,7 +16,6 @@ var (
 
 func init() {
 	gracefulExit()
-	http.DefaultTransport.(*http.Transport).TLSClientConfig = &tls.Config{InsecureSkipVerify: true}
 	flag.StringVar(&source, "source", "SI", "source can be SI or SCMB")
 	flag.Parse()
 }
