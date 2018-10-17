@@ -24,8 +24,17 @@ func (a *Anecdote) String() string {
 	return result
 }
 
-// SCMB Se Coucher Moins Bete
-func SCMB() ([]Anecdote, error) {
+// Sources ...
+var Sources map[string]func() ([]Anecdote, error)
+
+func init() {
+	Sources = map[string]func() ([]Anecdote, error){}
+	Sources["SCMB"] = scmb
+	Sources["SI"] = si
+	Sources["D2R"] = d2r
+}
+
+func scmb() ([]Anecdote, error) {
 	client := &http.Client{
 		Transport: &http.Transport{
 			TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
@@ -53,8 +62,7 @@ func SCMB() ([]Anecdote, error) {
 	return found, nil
 }
 
-// SI Savoir Inutile
-func SI() ([]Anecdote, error) {
+func si() ([]Anecdote, error) {
 	found := []Anecdote{}
 	res, err := http.Get("https://www.savoir-inutile.com/")
 	if err != nil {
@@ -65,12 +73,31 @@ func SI() ([]Anecdote, error) {
 	if err != nil {
 		return nil, err
 	}
-	doc.Find("#phrase").Each(func(i int, s *goquery.Selection) {
-		summary := s.Text()
-		found = append(found, Anecdote{
-			Summary: summary,
-			Title:   "",
-		})
+	found = append(found, Anecdote{
+		Summary: doc.Find("#phrase").First().Text(),
+		Title:   "",
+	})
+	return found, nil
+}
+
+func d2r() ([]Anecdote, error) {
+	found := []Anecdote{}
+	res, err := http.Get("http://www.dico2rue.com/mots-au-hasard/")
+	if err != nil {
+		return nil, err
+	}
+	defer res.Body.Close()
+	doc, err := goquery.NewDocumentFromReader(res.Body)
+	if err != nil {
+		return nil, err
+	}
+	body := doc.Find(".word_center").First()
+	word := strings.TrimSpace(body.Find("td.word").First().Text())
+	def := strings.TrimSpace(body.Find("tbody > tr:nth-child(2)").First().Text())
+	ex := strings.TrimSpace(body.Find("td.example").First().Text())
+	found = append(found, Anecdote{
+		Summary: def + "\n" + ex,
+		Title:   word,
 	})
 	return found, nil
 }

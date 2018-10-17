@@ -1,23 +1,14 @@
 package main
 
 import (
-	"flag"
-	"fmt"
-	"log"
 	"os"
 	"os/signal"
 
 	"github.com/chneau/anecdote/pkg/anecdote"
 )
 
-var (
-	source string
-)
-
 func init() {
 	gracefulExit()
-	flag.StringVar(&source, "source", "SI", "source can be SI or SCMB")
-	flag.Parse()
 }
 
 func gracefulExit() {
@@ -30,25 +21,36 @@ func gracefulExit() {
 }
 
 // checkError
-func ce(err error, msg string) {
+func ce(err error) {
 	if err != nil {
-		log.Panicln(msg, err)
+		panic(err)
 	}
 }
 
-func main() {
-	aa := []anecdote.Anecdote{}
-	var err error
-	switch source {
-	case "SCMB":
-		aa, err = anecdote.SCMB()
-		ce(err, "anecdote")
-	case "SI":
-		aa, err = anecdote.SI()
-		ce(err, "anecdote")
-	default:
-		aa, err = anecdote.SCMB()
-		ce(err, "anecdote")
+func printUsage() {
+	print(`Possible values `)
+	j := 0
+	for i := range anecdote.Sources {
+		if j == len(anecdote.Sources)-1 {
+			print(i, ".")
+			continue
+		}
+		print(i, " ")
+		j++
 	}
-	fmt.Println(aa[0].String())
+	println()
+}
+
+func main() {
+	source := "SCMB"
+	if len(os.Args) > 1 {
+		source = os.Args[1]
+	}
+	if v, exist := anecdote.Sources[source]; exist {
+		aa, err := v()
+		ce(err)
+		println(aa[0].String())
+		return
+	}
+	printUsage()
 }
