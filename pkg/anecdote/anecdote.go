@@ -80,6 +80,10 @@ func init() {
 		Title:   "h2 > a",
 		Summary: ".definitions",
 	})
+	Sources["LQ"] = Builder(Descriptor{
+		URL:     "http://www.litquotes.com/Random-Quote.php",
+		Summary: ".purple > p",
+	})
 }
 
 // Builder returns annecdotes funcs
