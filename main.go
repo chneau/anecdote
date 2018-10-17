@@ -25,10 +25,9 @@ func main() {
 		source = os.Args[1]
 	}
 	if len(os.Args) > 2 {
-		var err error
-		nb, err = strconv.Atoi(os.Args[2])
-		if err != nil {
-			panic(err)
+		nb, _ = strconv.Atoi(os.Args[2])
+		if nb < 1 {
+			nb = 1
 		}
 	}
 	if _, exist := anecdote.Sources[source]; !exist {
