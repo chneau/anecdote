@@ -74,6 +74,12 @@ func init() {
 		Title:   "#random_word",
 		Summary: "#random_word_definition",
 	})
+	Sources["OSD"] = Builder(Descriptor{
+		URL:     "http://onlineslangdictionary.com/random-word/",
+		Content: ".term",
+		Title:   "h2 > a",
+		Summary: ".definitions",
+	})
 }
 
 // Builder returns annecdotes funcs
