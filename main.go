@@ -28,17 +28,10 @@ func ce(err error) {
 }
 
 func printUsage() {
-	print(`Possible values `)
-	j := 0
-	for i := range anecdote.Sources {
-		if j == len(anecdote.Sources)-1 {
-			print(i, ".")
-			continue
-		}
-		print(i, " ")
-		j++
+	println(`Possible values:`)
+	for k, v := range anecdote.Sources {
+		println(k, "<=>", v.Desc)
 	}
-	println()
 }
 
 func main() {
@@ -47,7 +40,7 @@ func main() {
 		source = os.Args[1]
 	}
 	if v, exist := anecdote.Sources[source]; exist {
-		aa, err := v()
+		aa, err := v.Anecdotes()
 		ce(err)
 		println(aa[0].String())
 		return
