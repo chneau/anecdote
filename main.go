@@ -2,6 +2,7 @@ package main
 
 import (
 	"os"
+	"sort"
 	"strconv"
 
 	"github.com/chneau/limiter"
@@ -13,8 +14,13 @@ const line = "##################################################################
 
 func printUsage() {
 	println(`Possible values:`)
-	for k, v := range anecdote.Sources {
-		println(k, "<=>", v.Desc)
+	sorted := []string{}
+	for k := range anecdote.Sources {
+		sorted = append(sorted, k)
+	}
+	sort.Strings(sorted)
+	for i := range sorted {
+		println(sorted[i], "<=>", anecdote.Sources[sorted[i]].Desc)
 	}
 }
 
