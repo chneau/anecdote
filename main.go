@@ -2,30 +2,9 @@ package main
 
 import (
 	"os"
-	"os/signal"
 
 	"github.com/chneau/anecdote/pkg/anecdote"
 )
-
-func init() {
-	gracefulExit()
-}
-
-func gracefulExit() {
-	quit := make(chan os.Signal)
-	signal.Notify(quit, os.Interrupt)
-	go func() {
-		<-quit
-		os.Exit(0)
-	}()
-}
-
-// checkError
-func ce(err error) {
-	if err != nil {
-		panic(err)
-	}
-}
 
 func printUsage() {
 	println(`Possible values:`)
@@ -41,7 +20,9 @@ func main() {
 	}
 	if v, exist := anecdote.Sources[source]; exist {
 		aa, err := v.Anecdotes()
-		ce(err)
+		if err != nil {
+			panic(err)
+		}
 		println(aa[0].String())
 		return
 	}
