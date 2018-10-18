@@ -5,6 +5,7 @@ import (
 	"os"
 	"sort"
 	"strconv"
+	"strings"
 
 	"github.com/chneau/limiter"
 
@@ -29,7 +30,7 @@ func main() {
 	source := "SCMB"
 	nb := 1
 	if len(os.Args) > 1 {
-		source = os.Args[1]
+		source = strings.ToUpper(os.Args[1])
 	}
 	if len(os.Args) > 2 {
 		nb, _ = strconv.Atoi(os.Args[2])
