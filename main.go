@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"os"
 	"sort"
 	"strconv"
@@ -10,17 +11,17 @@ import (
 	"github.com/chneau/anecdote/pkg/anecdote"
 )
 
-const line = "############################################################################"
+const line = "##############################################################################"
 
 func printUsage() {
-	println(`Possible values:`)
+	fmt.Println(`Possible values:`)
 	sorted := []string{}
 	for k := range anecdote.Sources {
 		sorted = append(sorted, k)
 	}
 	sort.Strings(sorted)
 	for i := range sorted {
-		println(sorted[i], "<=>", anecdote.Sources[sorted[i]].Desc)
+		fmt.Println(sorted[i], "<=>", anecdote.Sources[sorted[i]].Desc)
 	}
 }
 
@@ -48,11 +49,11 @@ func main() {
 				if err != nil {
 					panic(err)
 				}
-				println(line + "\n" + aa[0].String())
+				fmt.Println(line + "\n" + aa[0].String())
 				return
 			}
 		})
 	}
 	limit.Wait()
-	println(line)
+	fmt.Println(line)
 }
