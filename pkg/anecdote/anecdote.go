@@ -103,14 +103,14 @@ func init() {
 			Desc:    "Savoir Inutile",
 			Summary: "#phrase",
 		},
-		"D2R": Descriptor{
-			URL:     "http://www.dico2rue.com/mots-au-hasard/",
-			Desc:    "Dico 2 Rue",
-			Content: ".word_center",
-			Title:   "td.word",
-			Summary: "tbody > tr:nth-child(2)",
-			Example: "td.example",
-		},
+		// "D2R": Descriptor{
+		// 	URL:     "http://www.dico2rue.com/mots-au-hasard/",
+		// 	Desc:    "Dico 2 Rue",
+		// 	Content: ".word_center",
+		// 	Title:   "td.word",
+		// 	Summary: "tbody > tr:nth-child(2)",
+		// 	Example: "td.example",
+		// },
 		"RW": Descriptor{
 			URL:     "https://randomword.com/",
 			Desc:    "Random Word",
